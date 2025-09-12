@@ -36,13 +36,14 @@ async function loadPricing(timeoutMs = 4000) {
         for (const m of data) {
             const id = String(m?.id ?? '');
             const pricing = m?.pricing || {};
-            const p = toNumber(pricing.prompt, NaN);
-            const c = toNumber(pricing.completion, NaN);
+            // OpenRouter commonly uses `input` / `output`; some sources use `prompt` / `completion`.
+            const p = toNumber(pricing.input ?? pricing.prompt, NaN);
+            const c = toNumber(pricing.output ?? pricing.completion, NaN);
             if (!Number.isFinite(p) && !Number.isFinite(c))
                 continue;
             const key = normalizeModelName(id);
             if (!map.has(key))
-                map.set(key, { inPerMTok: Number.isFinite(p) ? p : 0, outPerMTok: Number.isFinite(c) ? c : 0 });
+                map.set(key, { inPerTok: Number.isFinite(p) ? p : 0, outPerTok: Number.isFinite(c) ? c : 0 });
         }
     }
     catch (e) {
@@ -72,5 +73,5 @@ function estimateCostFor(model, inTokens, outTokens, prices) {
     const p = priceForModel(prices, model);
     if (!p)
         return 0;
-    return (inTokens / 1e6) * p.inPerMTok + (outTokens / 1e6) * p.outPerMTok;
+    return (inTokens) * p.inPerTok + (outTokens) * p.outPerTok;
 }

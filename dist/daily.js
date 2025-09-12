@@ -41,7 +41,20 @@ const pricing_1 = require("./pricing");
 const DEFAULT_ROOT = path.join(process.env.HOME || process.env.USERPROFILE || '', '.codex', 'sessions');
 const TOKEN_KEYS_IN = ["input_tokens", "prompt_tokens", "request_tokens"];
 const TOKEN_KEYS_OUT = ["output_tokens", "completion_tokens", "response_tokens"];
-const MODEL_KEYS = ["model", "model_name"];
+const MODEL_KEYS = [
+    "model",
+    "model_name",
+    "modelId",
+    "model_id",
+    "modelSlug",
+    "model_slug",
+    "deployment",
+    "engine",
+    "request_model",
+    "response_model",
+    "selected_model",
+    "target_model",
+];
 const TIME_KEYS = ["created_at", "timestamp", "time", "ts", "created", "start_time", "end_time"];
 function getEnvPrice(name, def = '0') {
     const v = process.env[name] ?? process.env[name.replace('CXUSAGE_', 'CODUSAGE_')] ?? def;
@@ -52,6 +65,8 @@ async function executeDaily(args) {
     const root = args.root || DEFAULT_ROOT;
     const tz = args.tz;
     const by = args.by || 'day';
+    const disableFallback = args.noFallback === true;
+    const fallbackModel = 'claude-3.5-sonnet';
     const files = await (0, utils_1.listJsonlFiles)(root);
     const agg = new Map();
     const aggModel = new Map();
@@ -111,6 +126,16 @@ async function executeDaily(args) {
     const dt = args.to || maxDate || (0, utils_1.formatDateInTZ)(new Date(), tz);
     // Load pricing from public API (OpenRouter models). If unavailable, costs are 0.
     const prices = await (0, pricing_1.loadPricing)();
+    const debug = args.debug === true;
+    if (debug) {
+        const uniqueModels = new Set();
+        for (const day of aggModel.values())
+            for (const m of day.keys())
+                uniqueModels.add(m);
+        console.error(`[cxusage] pricing entries: ${prices.size}, unique models seen: ${uniqueModels.size}`);
+        const sample = Array.from(uniqueModels).slice(0, 10).join(', ');
+        console.error(`[cxusage] sample models: ${sample}`);
+    }
     const rows = [];
     for (let cur = new Date(df + 'T00:00:00Z');;) {
         const curStr = (0, utils_1.formatDateInTZ)(cur, tz);
@@ -128,7 +153,11 @@ async function executeDaily(args) {
                 const mm = aggModel.get(curStr);
                 if (mm) {
                     for (const [m, inf] of mm.entries()) {
-                        cost += (0, pricing_1.estimateCostFor)(m, inf.in, inf.out, prices);
+                        let c = (0, pricing_1.estimateCostFor)(m, inf.in, inf.out, prices);
+                        if (!disableFallback && (!isFinite(c) || c === 0) && m === 'unknown') {
+                            c = (0, pricing_1.estimateCostFor)(fallbackModel, inf.in, inf.out, prices);
+                        }
+                        cost += c;
                     }
                 }
                 rows.push({
@@ -160,7 +189,10 @@ async function executeDaily(args) {
                 });
                 for (const [m, info] of arr) {
                     const tot = info.in + info.out;
-                    const cost = (0, pricing_1.estimateCostFor)(m, info.in, info.out, prices);
+                    let cost = (0, pricing_1.estimateCostFor)(m, info.in, info.out, prices);
+                    if (!disableFallback && (!isFinite(cost) || cost === 0) && m === 'unknown') {
+                        cost = (0, pricing_1.estimateCostFor)(fallbackModel, info.in, info.out, prices);
+                    }
                     rows.push({
                         date: curStr,
                         model: m,

@@ -7,7 +7,20 @@ const DEFAULT_ROOT = path.join(process.env.HOME || process.env.USERPROFILE || ''
 
 const TOKEN_KEYS_IN = ["input_tokens", "prompt_tokens", "request_tokens"]
 const TOKEN_KEYS_OUT = ["output_tokens", "completion_tokens", "response_tokens"]
-const MODEL_KEYS = ["model", "model_name"]
+const MODEL_KEYS = [
+  "model",
+  "model_name",
+  "modelId",
+  "model_id",
+  "modelSlug",
+  "model_slug",
+  "deployment",
+  "engine",
+  "request_model",
+  "response_model",
+  "selected_model",
+  "target_model",
+]
 const TIME_KEYS = ["created_at", "timestamp", "time", "ts", "created", "start_time", "end_time"]
 
 type Row = {
@@ -41,6 +54,8 @@ export async function executeDaily(args: DailyArgs): Promise<number> {
   const root = args.root || DEFAULT_ROOT
   const tz = args.tz
   const by = args.by || 'day'
+  const disableFallback = (args as any).noFallback === true
+  const fallbackModel = 'claude-3.5-sonnet'
 
   const files = await listJsonlFiles(root)
 
@@ -103,6 +118,14 @@ export async function executeDaily(args: DailyArgs): Promise<number> {
 
   // Load pricing from public API (OpenRouter models). If unavailable, costs are 0.
   const prices = await loadPricing()
+  const debug = (args as any).debug === true
+  if (debug) {
+    const uniqueModels = new Set<string>()
+    for (const day of aggModel.values()) for (const m of day.keys()) uniqueModels.add(m)
+    console.error(`[cxusage] pricing entries: ${prices.size}, unique models seen: ${uniqueModels.size}`)
+    const sample = Array.from(uniqueModels).slice(0, 10).join(', ')
+    console.error(`[cxusage] sample models: ${sample}`)
+  }
 
   const rows: Row[] = []
   for (let cur = new Date(df + 'T00:00:00Z'); ; ) {
@@ -119,7 +142,11 @@ export async function executeDaily(args: DailyArgs): Promise<number> {
         const mm = aggModel.get(curStr)
         if (mm) {
           for (const [m, inf] of mm.entries()) {
-            cost += estimateCostFor(m, inf.in, inf.out, prices)
+            let c = estimateCostFor(m, inf.in, inf.out, prices)
+            if (!disableFallback && (!isFinite(c) || c === 0) && m === 'unknown') {
+              c = estimateCostFor(fallbackModel, inf.in, inf.out, prices)
+            }
+            cost += c
           }
         }
         rows.push({
@@ -147,7 +174,10 @@ export async function executeDaily(args: DailyArgs): Promise<number> {
         })
         for (const [m, info] of arr) {
           const tot = info.in + info.out
-          const cost = estimateCostFor(m, info.in, info.out, prices)
+          let cost = estimateCostFor(m, info.in, info.out, prices)
+          if (!disableFallback && (!isFinite(cost) || cost === 0) && m === 'unknown') {
+            cost = estimateCostFor(fallbackModel, info.in, info.out, prices)
+          }
           rows.push({
             date: curStr,
             model: m,

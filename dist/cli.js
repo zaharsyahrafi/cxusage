@@ -41,7 +41,7 @@ const daily_1 = require("./daily");
 const VERSION = '0.1.0';
 function printHelp() {
     const defRoot = path.join(os.homedir(), '.codex', 'sessions');
-    console.log(`usage: cxusage [daily] [--root ROOT] [--from YYYY-MM-DD] [--to YYYY-MM-DD] [--tz TZ] [--by day|model] [--md|--json] [--empty]\n`);
+    console.log(`usage: cxusage [daily] [--root ROOT] [--from YYYY-MM-DD] [--to YYYY-MM-DD] [--tz TZ] [--by day|model] [--md|--json] [--empty] [--no-fallback] [--debug]\n`);
     console.log('Analyze Claude Code usage from Codex session logs.');
     console.log('\noptions:');
     console.log('  --root ROOT        Sessions root (default: ' + defRoot + ')');
@@ -52,6 +52,8 @@ function printHelp() {
     console.log('  --md               Output as Markdown table');
     console.log('  --json             Output as JSON lines');
     console.log('  --empty            Show empty days (zero rows for missing days)');
+    console.log('  --no-fallback      Disable pricing fallback for unknown models');
+    console.log('  --debug            Print debug info about pricing/model matching');
     console.log('\ncommands:');
     console.log('  daily              Aggregate per day (optionally by model)');
 }
@@ -84,6 +86,14 @@ function parseArgs(argv) {
         }
         if (a === '--empty') {
             out.empty = true;
+            continue;
+        }
+        if (a === '--no-fallback') {
+            out.noFallback = true;
+            continue;
+        }
+        if (a === '--debug') {
+            out.debug = true;
             continue;
         }
         if (a === '--by') {
