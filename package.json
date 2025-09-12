@@ -1,7 +1,7 @@
 {
   "name": "cxusage",
-  "version": "0.1.0",
-  "description": "Analyze Claude Code daily usage from Codex session logs (Node CLI)",
+  "version": "0.0.0",
+  "description": "Analyze Codex daily usage from session logs (Node CLI)",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -34,7 +34,8 @@
     "node": ">=18"
   },
   "keywords": [
-    "claude",
+    "openai",
+    "codex",
     "code",
     "usage",
     "tokens",
