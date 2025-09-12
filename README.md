@@ -1,6 +1,6 @@
 # cxusage
 
-Analyze Claude Code daily usage from Codex session logs. Similar to `ccusage`, this Node.js CLI scans JSONL session logs under `~/.codex/sessions` and aggregates token counts by day or by model within each day.
+Analyze Codex daily usage from session logs. Similar to `ccusage`, this Node.js CLI scans JSONL session logs under `~/.codex/sessions` and aggregates token counts by day or by model within each day.
 
 - Input: JSONL logs (recursively) under `~/.codex/sessions` by default
 - Output: Plain table (default), Markdown table (`--md`), or JSON lines (`--json`)
