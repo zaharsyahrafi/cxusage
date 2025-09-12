@@ -1,0 +1,57 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Python cache/bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+env/
+.env
+.env.*
+.python-version
+
+# Packaging / build
+build/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+npm-debug.log*
+
+# Testing / coverage / tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.hypothesis/
+.cache/
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# Vim/Editor swap and backup files
+*.swp
+*.swo
+*.swx
+.*.swp
+.*.swo
+.*.swx
+*~
+
+# Logs
+*.log
