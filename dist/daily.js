@@ -39,8 +39,28 @@ const path = __importStar(require("path"));
 const utils_1 = require("./utils");
 const pricing_1 = require("./pricing");
 const DEFAULT_ROOT = path.join(process.env.HOME || process.env.USERPROFILE || '', '.codex', 'sessions');
-const TOKEN_KEYS_IN = ["input_tokens", "prompt_tokens", "request_tokens"];
-const TOKEN_KEYS_OUT = ["output_tokens", "completion_tokens", "response_tokens"];
+const TOKEN_KEYS_IN = [
+    // common
+    "input_tokens", "prompt_tokens", "request_tokens",
+    // count variants
+    "input_token_count", "output_token_count", // sometimes misused
+    "prompt_token_count", "completion_token_count",
+    "inputTokenCount", "outputTokenCount",
+    "promptTokenCount", "completionTokenCount",
+    "num_input_tokens", "num_output_tokens",
+    // shorthand variants
+    "tokens_in", "tokensIn", "promptTokens",
+];
+const TOKEN_KEYS_OUT = [
+    // common
+    "output_tokens", "completion_tokens", "response_tokens",
+    // count variants
+    "output_token_count", "completion_token_count",
+    "outputTokenCount", "completionTokenCount",
+    "num_output_tokens",
+    // shorthand variants
+    "tokens_out", "tokensOut", "completionTokens",
+];
 const MODEL_KEYS = [
     "model",
     "model_name",
@@ -66,7 +86,11 @@ async function executeDaily(args) {
     const tz = args.tz;
     const by = args.by || 'day';
     const disableFallback = args.noFallback === true;
-    const fallbackModel = 'claude-3.5-sonnet';
+    const fallbackModels = [
+        'openai/gpt-5', 'gpt-5',
+        'openai/gpt-4o', 'gpt-4o',
+        'anthropic/claude-3.5-sonnet', 'claude-3.5-sonnet'
+    ];
     const files = await (0, utils_1.listJsonlFiles)(root);
     const agg = new Map();
     const aggModel = new Map();
@@ -155,7 +179,11 @@ async function executeDaily(args) {
                     for (const [m, inf] of mm.entries()) {
                         let c = (0, pricing_1.estimateCostFor)(m, inf.in, inf.out, prices);
                         if (!disableFallback && (!isFinite(c) || c === 0) && m === 'unknown') {
-                            c = (0, pricing_1.estimateCostFor)(fallbackModel, inf.in, inf.out, prices);
+                            for (const fb of fallbackModels) {
+                                c = (0, pricing_1.estimateCostFor)(fb, inf.in, inf.out, prices);
+                                if (c > 0)
+                                    break;
+                            }
                         }
                         cost += c;
                     }
@@ -191,7 +219,13 @@ async function executeDaily(args) {
                     const tot = info.in + info.out;
                     let cost = (0, pricing_1.estimateCostFor)(m, info.in, info.out, prices);
                     if (!disableFallback && (!isFinite(cost) || cost === 0) && m === 'unknown') {
-                        cost = (0, pricing_1.estimateCostFor)(fallbackModel, info.in, info.out, prices);
+                        for (const fb of fallbackModels) {
+                            const c2 = (0, pricing_1.estimateCostFor)(fb, info.in, info.out, prices);
+                            if (c2 > 0) {
+                                cost = c2;
+                                break;
+                            }
+                        }
                     }
                     rows.push({
                         date: curStr,

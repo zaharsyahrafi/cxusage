@@ -37,7 +37,10 @@ Examples:
 The CLI automatically fetches model pricing from the public OpenRouter models API and estimates cost based on input/output tokens per model.
 
 - API: `https://openrouter.ai/api/v1/models`
-- If pricing is unavailable (offline or unknown model), cost shows as `$0.00` for those rows.
+- Fallback: when a model name is missing (`unknown`), cxusage attempts a fallback chain: `openai/gpt-5` → `openai/gpt-4o` → `anthropic/claude-3.5-sonnet`. The first available price is used.
+- Disable fallback with `--no-fallback`. With fallback disabled, unknown models show `$0.00`.
+
+Notes about token counts: cxusage sums numeric fields commonly used for token counts (e.g., `input_tokens`, `output_tokens`, `promptTokenCount`, `completionTokenCount`, etc.). If older logs don’t include any of these fields, tokens will appear as zero even though events are counted. Use `--by model --debug` to inspect which model names are detected in your logs.
 
 ## Programmatic invocation
 
