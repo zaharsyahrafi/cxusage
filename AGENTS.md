@@ -34,6 +34,7 @@ Validation checklist for changes that touch runtime behavior:
 
 - `package.json` contains `bin` mapping to `dist/cli.js` and `prepublishOnly` builds the package.
 - Do not rely on `prepare` to build; we commit `dist/` and build in release workflow to support `npx github:...` usage.
+- NPM package name: `cxusage`. The CLI installs the `cxusage` bin.
 - NPM publish is automated on tags matching `v*.*.*` via GitHub Actions; requires `NPM_TOKEN` secret.
 
 ## Code style
@@ -54,4 +55,3 @@ Validation checklist for changes that touch runtime behavior:
 - Outline a brief plan: goals, approach, and expected changes.
 - Keep commits scoped and messages clear.
 - If adding dependencies, justify the choice and impact.
-

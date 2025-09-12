@@ -12,8 +12,8 @@ Analyze Claude Code daily usage from Codex session logs. Similar to `ccusage`, t
 - After publish to npm: `npx cxusage --help`
 - From GitHub (before publish): `npx github:Effet/cxusage -- --help`
 - Typical commands:
-  - `cxusage daily --from 2025-01-01 --to 2025-01-31 --md`
-  - `cxusage daily --by model --json`
+  - `npx cxusage daily --from 2025-01-01 --to 2025-01-31 --md`
+  - `npx cxusage daily --by model --json`
 
 ## Usage
 
@@ -63,4 +63,6 @@ This package exposes only a CLI. If you need a library API, please open an issue
 
 - CI runs on pushes/PRs to verify install and build.
 - Stable release: create a Git tag like `v0.1.0` to publish to npm as `latest`.
+  - The workflow automatically sets `package.json` version from the Git tag (stripping the leading `v`).
+  - Pre-release tags (containing a hyphen, e.g. `v0.2.0-rc.1`) publish with the `next` dist-tag.
 - The release workflow requires a repository secret `NPM_TOKEN` with publish permissions.
